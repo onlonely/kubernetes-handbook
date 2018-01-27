@@ -119,6 +119,12 @@ Mar 31 16:44:41 sz-pg-oam-docker-test-002.tendcloud.com kubelet[81047]: error: f
 
 修改`/etc/fstab`将，swap系统注释掉。
 
+kuberentes1.8集群,必须手工添加node权限,否则节将无法加入集群,kubelet报错
+Failed to list *v1.Service: services is forbidden: User "system:node:11.11.11.200" cannot list services at the cluster scope
+
+``` bash
+kubectl create clusterrolebinding kubelet-clusterbinding-${nodeip} --clusterrole=system:node --user=system:node:${nodeip}
+```
 ---
 
 kubelet 启动时向 kube-apiserver 发送 TLS bootstrapping 请求，需要先将 bootstrap token 文件中的 kubelet-bootstrap 用户赋予 system:node-bootstrapper cluster 角色(role)，
